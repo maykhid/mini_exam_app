@@ -35,6 +35,8 @@ dependencies:
   firebase_core: ^1.0.2
   firebase_auth: ^1.0.1
   cloud_firestore:
+  dartz: ^0.10.0-nullsafety.0
+  get_it: ^7.2.0
 
 dev_dependencies:
   flutter_test:
