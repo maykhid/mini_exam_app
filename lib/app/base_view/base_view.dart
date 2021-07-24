@@ -9,16 +9,16 @@ class BaseView extends StatelessWidget {
   final Widget? body;
   final bool? resizeToAvoidBottomInsets;
   final Color backgroundColor;
-  final PrefferedHeader header;
+  // final PrefferedHeader header;
 
-  const BaseView(
-      {Key? key,
-      this.padding,
-      this.backgroundColor = Colors.white,
-      this.resizeToAvoidBottomInsets,
-      this.body,
-      this.header = PrefferedHeader.none})
-      : super(key: key);
+  const BaseView({
+    Key? key,
+    this.padding,
+    this.backgroundColor = Colors.white,
+    this.resizeToAvoidBottomInsets,
+    this.body,
+    // this.header = PrefferedHeader.none,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -32,12 +32,7 @@ class BaseView extends StatelessWidget {
                 vertical: 3.h,
               ),
           //
-          child: Column(
-            children: [
-              getHeader(header),
-              body!,
-            ],
-          ),
+          child: body!,
         ),
       ),
     );

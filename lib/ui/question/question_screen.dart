@@ -108,6 +108,8 @@ class _QuestionScreenState extends State<QuestionScreen> {
               ),
             ],
           ),
+
+          /// Extract options using the index of [Swiper] i.e mainIndex
           TextButton(
             onPressed: () => model.score(),
             child: Text(
@@ -134,8 +136,12 @@ class _QuestionScreenState extends State<QuestionScreen> {
         itemBuilder: (context, index) {
           //
 
-          var _ = model.getAnsKeys(mainIndex, index);
-          var _v = model.getAnsValues(mainIndex, index);
+          var _ = model.getAnsKeys(mainIndex,
+              index); // The a key that reps a value (option) i.e A, B...
+
+          var _v = model.getAnsValues(mainIndex,
+              index); // The map value that holds an option of a question
+
           model.controllerIndexValue = mainIndex;
 
           //
