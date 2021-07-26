@@ -3,11 +3,19 @@ import 'dart:convert';
 class QAModel {
   QAModel({required this.questionData});
 
-  final List<QuestionData> questionData;
+  late List<QuestionData> questionData;
 
-  factory QAModel.fromMap(List<Map<String, dynamic>> questions) => QAModel(
-      questionData: List<QuestionData>.from(
-          questions.map((e) => QuestionData.fromMap(e))));
+  factory QAModel.fromMap(List data) {
+    List<QuestionData> newData = [];
+    for (int i = 0; i < data.length; i++) {
+      newData.add(QuestionData.fromMap(data[i]));
+    }
+    return QAModel(questionData: newData);
+  }
+
+  // factory QAModel.fromMap(List<Map<String, dynamic>> questions) => QAModel(
+  //     questionData: List<QuestionData>.from(
+  //         questions.map((e) => QuestionData.fromMap(e))));
   // List<QuestionData> questionData;
 
   // QAModel({required this.questionData}); // List of map is passed here

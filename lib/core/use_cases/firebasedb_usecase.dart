@@ -1,37 +1,24 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dartz/dartz.dart';
+import 'package:exam_cheat_detector/core/entities/firestore_params.dart';
+import 'package:exam_cheat_detector/core/errors/server_error.dart';
+import 'package:exam_cheat_detector/core/repositories/firestore_repo.dart';
 import 'package:exam_cheat_detector/core/services/firestore_db/firestore_source.dart';
 
 abstract class FirestoreDBUseCase {
-  Future<void> storeData();
-  Future<void> retreiveData();
+  Future<void> storeData(FirestoreParams params);
+  Future<DocumentSnapshot<Map<String, dynamic>>> retreiveData(FirestoreParams params);
 }
 
-class FirebaseDBUseCaseImpl extends FirestoreDBUseCase {
-  final FirestoreSourceImpl firestoreSourceImpl;
+class FirestoreDBUseCaseImpl extends FirestoreDBUseCase {
+  final FirestoreRepo firestoreRepo;
 
-  FirebaseDBUseCaseImpl({required this.firestoreSourceImpl});
-
-  @override
-  Future<void> retreiveData({String? document, String? collection}) async {
-    try {
-      await firestoreSourceImpl.retrieveDataFromDB(
-        document: document,
-        collection: collection,
-      );
-    } catch (e) {
-      print(e);
-    }
-  }
+  FirestoreDBUseCaseImpl({required this.firestoreRepo});
 
   @override
-  Future<void> storeData({String? document, String? collection, data}) async {
-    try {
-      await firestoreSourceImpl.addDataToDB(
-        document: document,
-        collection: collection,
-        data: data,
-      );
-    } catch (e) {
-      print(e);
-    }
-  }
+  Future<DocumentSnapshot<Map<String, dynamic>>> retreiveData(FirestoreParams params) =>
+      firestoreRepo.retreiveData(params);
+
+  @override
+  Future<void> storeData(params) => firestoreRepo.storeData(params);
 }

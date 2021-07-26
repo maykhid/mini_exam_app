@@ -1,3 +1,4 @@
+import 'package:exam_cheat_detector/app/locator.dart';
 import 'package:exam_cheat_detector/ui/home/home.dart';
 import 'package:exam_cheat_detector/ui/question/question_screen.dart';
 import 'package:exam_cheat_detector/ui/question/question_view_model.dart';
@@ -26,12 +27,16 @@ class _ExamAppState extends State<ExamApp> {
                 create: (_) => BaseViewModel(),
               ),
               ChangeNotifierProvider(
-                create: (_) => QuestionViewModel(),
+                create: (_) =>
+                    QuestionViewModel(firestoreDBUseCase: locator()),
               ),
             ],
             builder: (context, snapshot) {
               return MaterialApp(
-                home: QuestionScreen(),
+                home: QuestionScreen(
+                  collection: 'newcollection',
+                  doc: 'newdoc',
+                ),
               );
             });
       },

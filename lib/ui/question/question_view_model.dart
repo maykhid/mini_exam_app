@@ -1,9 +1,19 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dartz/dartz.dart';
 import 'package:exam_cheat_detector/app/base_view/base_view_model.dart';
+import 'package:exam_cheat_detector/core/data_models/QA_model.dart';
+import 'package:exam_cheat_detector/core/entities/firestore_params.dart';
+import 'package:exam_cheat_detector/core/errors/server_error.dart';
 import 'package:exam_cheat_detector/core/services/dummy_data/q_a/random.dart';
+import 'package:exam_cheat_detector/core/use_cases/firebasedb_usecase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 
 class QuestionViewModel extends BaseViewModel {
+  FirestoreDBUseCase firestoreDBUseCase;
+
+  QuestionViewModel({required this.firestoreDBUseCase});
+
   List<dynamic> stateList = List<dynamic>.filled(
     questions.length,
     '',
@@ -46,6 +56,24 @@ class QuestionViewModel extends BaseViewModel {
       }
     }
     print(score);
+  }
+
+  // Future
+
+  /// Get db questions from firestore
+  Future<QAModel> pullQA(FirestoreParams params) async {
+    try {
+      var data = await firestoreDBUseCase.retreiveData(params);
+
+      print(data.data());
+      return QAModel.fromMap(data.data()!['default']);
+    } on ServerError catch (e) {
+      throw ServerError(e.message);
+    } catch (e) {
+      print(e);
+      throw Exception(e);
+    }
+    // return
   }
 
   // updateCIV(int value) {

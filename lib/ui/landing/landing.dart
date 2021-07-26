@@ -90,13 +90,11 @@ class LandingScreen extends StatelessWidget {
 
                         //
                         Button.rounded(
-                          width: 45.h,
-                          height: 9.h,
-                          color: AppColors.lightPurple,
-                          buttonText: AppStrings.log_in,
-                          onPressed: () => model.storeQA('newcollection',
-                              'newdoc', {'default': dbquestions}),
-                        ),
+                            width: 45.h,
+                            height: 9.h,
+                            color: AppColors.lightPurple,
+                            buttonText: AppStrings.log_in,
+                            onPressed: () {}),
                       ],
                     ),
                   )
