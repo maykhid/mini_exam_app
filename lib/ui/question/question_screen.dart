@@ -1,5 +1,7 @@
 import 'package:exam_cheat_detector/app/consts/app_colors.dart';
 import 'package:exam_cheat_detector/app/base_view/base_view.dart';
+import 'package:exam_cheat_detector/core/data_models/QA_model.dart';
+import 'package:exam_cheat_detector/core/entities/firestore_params.dart';
 import 'package:exam_cheat_detector/ui/question/question_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
@@ -7,34 +9,64 @@ import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 class QuestionScreen extends StatefulWidget {
+  QuestionScreen({required this.collection, required this.doc});
+  final String collection;
+  final String doc;
+
   @override
   _QuestionScreenState createState() => _QuestionScreenState();
 }
 
 class _QuestionScreenState extends State<QuestionScreen> {
   /* 
-  Note to self: The _stateList created is to store the value of radio button (for each specific question) and hold
+  Note to self: The stateList created is to store the value of radio button (for each specific question) and hold
   the answer picked by the user
   */
+
+  late List<String> stateList;
+  late List<String> answerList;
 
   @override
   Widget build(BuildContext context) {
     return Consumer<QuestionViewModel>(builder: (context, model, child) {
       return BaseView(
-        body: Column(
-          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            buildSwiperContainer(model),
-            //
-            buildButtonContainer(model)
-          ],
+        body: FutureBuilder<QAModel>(
+          future: model.pullQA(FirestoreParams(
+              collection: widget.collection, document: widget.doc)),
+          builder: (context, snapshot) {
+            if (snapshot.hasData &&
+                snapshot.connectionState == ConnectionState.done) {
+              stateList = List<String>.filled(
+                //
+                snapshot.data!.questionData.length,
+                '',
+                growable: false,
+              );
+
+              answerList = model.generateAnswerAsList(snapshot);
+
+              return Column(
+                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  buildSwiperContainer(model, snapshot),
+                  //
+                  buildButtonContainer(model, snapshot),
+                ],
+              );
+            }
+
+            return Container();
+          },
         ),
       );
     });
   }
 
   //
-  Container buildSwiperContainer(QuestionViewModel model) {
+  Container buildSwiperContainer(
+      QuestionViewModel model, AsyncSnapshot<QAModel> snapshot) {
+    var snapshotData = snapshot.data!;
+
     return Container(
       height: 80.h,
       width: 100.w,
@@ -47,12 +79,12 @@ class _QuestionScreenState extends State<QuestionScreen> {
             children: [
               // question
               Center(
-                child:
-                    Text('(${mainIndex + 1}) ${model.getQuestions(mainIndex)}'),
+                child: Text(
+                    '(${mainIndex + 1}) ${snapshotData.questionData[mainIndex].question}'),
               ),
               // answer
 
-              buildAnswerContainer(model, mainIndex),
+              buildAnswerContainer(model, mainIndex, snapshot),
             ],
           );
         },
@@ -63,7 +95,62 @@ class _QuestionScreenState extends State<QuestionScreen> {
   }
 
   //
-  Container buildButtonContainer(QuestionViewModel model) {
+  buildAnswerContainer(
+      QuestionViewModel model, int mainIndex, AsyncSnapshot<QAModel> snapshot) {
+    var snapshotData = snapshot.data!;
+
+    return StatefulBuilder(
+        // stream: null,
+        builder: (context, state) {
+      return Container(
+        height: 50.h,
+        child: ListView.builder(
+          itemBuilder: (context, index) {
+            //
+
+            // var _ = model.getAnsKeys(mainIndex,
+            //     index); // The a key that reps a value (option) i.e A, B...
+
+            // var _v = model.getAnsValues(mainIndex,
+            //     index); // The map value that holds an option of a question
+
+            var options = snapshotData.questionData[mainIndex].options;
+
+            var _ = options.toMap().keys.toList()[index];
+
+            var _v = options.toMap().values.toList()[index];
+
+            model.controllerIndexValue = mainIndex;
+
+            return RadioListTile<String>(
+              value: _,
+              groupValue: stateList[
+                  mainIndex], // store the user selected answer, also inadvertently, store selected 'state' of the RadioListTile
+              onChanged: (newVal) {
+                state(() {
+                  stateList[mainIndex] =
+                      newVal!; // assign new value to the model.stateList[mainIndex]
+
+                  print(stateList);
+                });
+              },
+              title: Text('$_ : $_v'),
+            );
+          },
+
+          itemCount: snapshotData.questionData[mainIndex].options
+              .toMap()
+              .keys
+              .toList()
+              .length, // use length of options as length of itemCount
+        ),
+      );
+    });
+  }
+
+  //
+  Container buildButtonContainer(
+      QuestionViewModel model, AsyncSnapshot<QAModel> snapshot) {
     return Container(
       width: 100.w,
       child: Column(
@@ -75,7 +162,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
               TextButton(
                 onPressed: () {
                   if (model.isFirstQuestion()) {
-                    setState(() {});
+                    // setState(() {});
                     return;
                   }
                   model.swiperController.previous();
@@ -88,11 +175,12 @@ class _QuestionScreenState extends State<QuestionScreen> {
                     backgroundColor:
                         MaterialStateProperty.all<Color>(AppColors.brown)),
               ),
-              //
+
               TextButton(
                 onPressed: () {
-                  if (model.isLastQuestion()) {
-                    setState(() {});
+                  if (model
+                      .isLastQuestion(snapshot.data!.questionData.length)) {
+                    // setState(() {});
                     return;
                   }
                   model.swiperController.next();
@@ -111,7 +199,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
 
           /// Extract options using the index of [Swiper] i.e mainIndex
           TextButton(
-            onPressed: () => model.score(),
+            onPressed: () => model.score(answerList, stateList),
             child: Text(
               'Submit',
               style: TextStyle(color: Colors.white),
@@ -124,40 +212,6 @@ class _QuestionScreenState extends State<QuestionScreen> {
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  //
-  Container buildAnswerContainer(QuestionViewModel model, int mainIndex) {
-    return Container(
-      height: 50.h,
-      child: ListView.builder(
-        itemBuilder: (context, index) {
-          //
-
-          var _ = model.getAnsKeys(mainIndex,
-              index); // The a key that reps a value (option) i.e A, B...
-
-          var _v = model.getAnsValues(mainIndex,
-              index); // The map value that holds an option of a question
-
-          model.controllerIndexValue = mainIndex;
-
-          //
-          return RadioListTile<String>(
-            value: _,
-            groupValue: model.stateList[mainIndex],
-            onChanged: (newVal) => setState(() {
-              // value = newVal;
-              model.stateList[mainIndex] =
-                  newVal; // assign new value to the model.stateList[mainIndex]
-              print(model.stateList);
-            }),
-            title: Text('$_ : $_v'),
-          );
-        },
-        itemCount: model.getOptions(mainIndex).length,
       ),
     );
   }
