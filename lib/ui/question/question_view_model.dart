@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dartz/dartz.dart';
 import 'package:exam_cheat_detector/app/base_view/base_view_model.dart';
 import 'package:exam_cheat_detector/core/data_models/QA_model.dart';
 import 'package:exam_cheat_detector/core/entities/firestore_params.dart';

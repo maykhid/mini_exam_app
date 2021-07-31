@@ -211,6 +211,25 @@ class _QuestionScreenState extends State<QuestionScreen> {
               ),
             ),
           ),
+
+          /// Container testing CountDownTimer
+          // Container(
+          //   width: 60.0,
+          //   padding: EdgeInsets.only(top: 3.0, right: 4.0),
+          //   child: CountDownTimer(
+          //     secondsRemaining: 3600,
+          //     whenTimeExpires: () {
+          //       // setState(() {
+          //       //   hasTimerStopped = true;
+          //       // });
+          //     },
+          //     countDownTimerStyle: TextStyle(
+          //       color: Color(0XFFf5a623),
+          //       fontSize: 17.0,
+          //       height: 1.2,
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );

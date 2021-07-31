@@ -1,6 +1,5 @@
 import 'package:exam_cheat_detector/app/consts/app_colors.dart';
 import 'package:exam_cheat_detector/app/strings/app_strings.dart';
-import 'package:exam_cheat_detector/core/services/dummy_data/q_a/random.dart';
 import 'package:exam_cheat_detector/ui/landing/landing_view_model.dart';
 import 'package:exam_cheat_detector/ui/widgets/buttons.dart';
 import 'package:flutter/material.dart';
