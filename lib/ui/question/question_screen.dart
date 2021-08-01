@@ -37,6 +37,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
           builder: (context, snapshot) {
             if (snapshot.hasData &&
                 snapshot.connectionState == ConnectionState.done) {
+              //
               stateList = List<String>.filled(
                 //
                 snapshot.data!.questionData.length,
@@ -67,7 +68,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
   //
   Container buildSwiperContainer(
       QuestionViewModel model, AsyncSnapshot<QAModel> snapshot) {
-    var snapshotData = snapshot.data!;
+    List snapshotData = snapshot.data!.questionData;
 
     return Container(
       height: 80.h,
@@ -82,7 +83,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
               // question
               Center(
                 child: Text(
-                    '(${mainIndex + 1}) ${snapshotData.questionData[mainIndex].question}'),
+                    '(${mainIndex + 1}) ${snapshotData[mainIndex].question}'),
               ),
               // answer
 
@@ -90,7 +91,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
             ],
           );
         },
-        itemCount: snapshotData.questionData.length,
+        itemCount: snapshotData.length,
         pagination: new SwiperPagination(),
       ),
     );
@@ -99,7 +100,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
   //
   buildAnswerContainer(
       QuestionViewModel model, int mainIndex, AsyncSnapshot<QAModel> snapshot) {
-    var snapshotData = snapshot.data!;
+    var snapshotData = snapshot.data!.questionData;
 
     return StatefulBuilder(
         // stream: null,
@@ -116,8 +117,8 @@ class _QuestionScreenState extends State<QuestionScreen> {
             // var _v = model.getAnsValues(mainIndex,
             //     index); // The map value that holds an option of a question
 
-            var options = snapshotData
-                .questionData[mainIndex].options; // options from firestore db
+            var options =
+                snapshotData[mainIndex].options; // options from firestore db
 
             var _k = options.toMap().keys.toList()[
                 index]; // convert options keys to list and assign the value at index to _k
@@ -142,7 +143,8 @@ class _QuestionScreenState extends State<QuestionScreen> {
             );
           },
 
-          itemCount: snapshotData.questionData[mainIndex].options
+          itemCount: snapshotData[mainIndex]
+              .options
               .toMap()
               .keys
               .toList()
@@ -155,6 +157,8 @@ class _QuestionScreenState extends State<QuestionScreen> {
   //
   Container buildButtonContainer(
       QuestionViewModel model, AsyncSnapshot<QAModel> snapshot) {
+    var snapshotData = snapshot.data!.questionData;
+
     return Container(
       width: 100.w,
       child: Column(
@@ -182,8 +186,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
 
               TextButton(
                 onPressed: () {
-                  if (model
-                      .isLastQuestion(snapshot.data!.questionData.length)) {
+                  if (model.isLastQuestion(snapshotData.length)) {
                     // setState(() {});
                     return;
                   }
