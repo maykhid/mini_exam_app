@@ -23,8 +23,9 @@ class _QuestionScreenState extends State<QuestionScreen> {
   the answer picked by the user
   */
 
-  late List<String> stateList;
-  late List<String> answerList;
+  late List<String> stateList; // This list stores the user selected answers
+  late List<String>
+      answerList; // This list stores all answer values from firestore
 
   @override
   Widget build(BuildContext context) {
@@ -41,9 +42,10 @@ class _QuestionScreenState extends State<QuestionScreen> {
                 snapshot.data!.questionData.length,
                 '',
                 growable: false,
-              );
+              ); // assign to stateList, a list of known length (length of questionData) with '' stored at each index
 
-              answerList = model.generateAnswerAsList(snapshot);
+              answerList = model.generateAnswerAsList(
+                  snapshot); // assign to answerList, a list of all answer values stored in firestore
 
               return Column(
                 // mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -88,7 +90,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
             ],
           );
         },
-        itemCount: model.modelQuestions.length,
+        itemCount: snapshotData.questionData.length,
         pagination: new SwiperPagination(),
       ),
     );
@@ -114,18 +116,20 @@ class _QuestionScreenState extends State<QuestionScreen> {
             // var _v = model.getAnsValues(mainIndex,
             //     index); // The map value that holds an option of a question
 
-            var options = snapshotData.questionData[mainIndex].options;
+            var options = snapshotData
+                .questionData[mainIndex].options; // options from firestore db
 
-            var _ = options.toMap().keys.toList()[index];
+            var _k = options.toMap().keys.toList()[
+                index]; // convert options keys to list and assign the value at index to _k
 
-            var _v = options.toMap().values.toList()[index];
+            var _v = options.toMap().values.toList()[
+                index]; // convert options values to list and assign the value at index to _v
 
             model.controllerIndexValue = mainIndex;
 
             return RadioListTile<String>(
-              value: _,
-              groupValue: stateList[
-                  mainIndex], // store the user selected answer, also inadvertently, store selected 'state' of the RadioListTile
+              value: _k,
+              groupValue: stateList[mainIndex],
               onChanged: (newVal) {
                 state(() {
                   stateList[mainIndex] =
@@ -134,7 +138,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
                   print(stateList);
                 });
               },
-              title: Text('$_ : $_v'),
+              title: Text('$_k : $_v'),
             );
           },
 
@@ -145,7 +149,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
               .length, // use length of options as length of itemCount
         ),
       );
-    });
+    }); // StateBuilder in this case prevents the whole screen from being rebuilt onSetState when an answer is selected
   }
 
   //
