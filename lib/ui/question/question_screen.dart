@@ -3,6 +3,7 @@ import 'package:exam_cheat_detector/app/base_view/base_view.dart';
 import 'package:exam_cheat_detector/core/data_models/QA_model.dart';
 import 'package:exam_cheat_detector/core/entities/firestore_params.dart';
 import 'package:exam_cheat_detector/ui/question/question_view_model.dart';
+import 'package:exam_cheat_detector/ui/widgets/count_down_timer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 import 'package:provider/provider.dart';
@@ -48,13 +49,21 @@ class _QuestionScreenState extends State<QuestionScreen> {
               answerList = model.generateAnswerAsList(
                   snapshot); // assign to answerList, a list of all answer values stored in firestore
 
-              return Column(
-                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  buildSwiperContainer(model, snapshot),
-                  //
-                  buildButtonContainer(model, snapshot),
-                ],
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // camera and timer
+                    _buildCameraAndTimer(),
+
+                    SizedBox(height: 5.h),
+                    // swiper / question and answer
+                    _buildSwiperContainer(model, snapshot),
+
+                    // buttons
+                    _buildButtonContainer(model, snapshot),
+                  ],
+                ),
               );
             }
 
@@ -65,13 +74,13 @@ class _QuestionScreenState extends State<QuestionScreen> {
     });
   }
 
-  //
-  Container buildSwiperContainer(
+  // The Swiper that displays the test
+  _buildSwiperContainer(
       QuestionViewModel model, AsyncSnapshot<QAModel> snapshot) {
     List snapshotData = snapshot.data!.questionData;
 
     return Container(
-      height: 80.h,
+      height: 50.h,
       width: 100.w,
       child: Swiper(
         loop: false,
@@ -82,23 +91,23 @@ class _QuestionScreenState extends State<QuestionScreen> {
             children: [
               // question
               Center(
-                child: Text(
-                    '(${mainIndex + 1}) ${snapshotData[mainIndex].question}'),
+                child: Text('${snapshotData[mainIndex].question}'),
               ),
               // answer
 
-              buildAnswerContainer(model, mainIndex, snapshot),
+              _buildOptionsContainer(model, mainIndex, snapshot),
             ],
           );
         },
         itemCount: snapshotData.length,
-        pagination: new SwiperPagination(),
+        // pagination: new SwiperPagination(),
+        pagination: SwiperPagination.fraction,
       ),
     );
   }
 
-  //
-  buildAnswerContainer(
+  // The options Container
+  _buildOptionsContainer(
       QuestionViewModel model, int mainIndex, AsyncSnapshot<QAModel> snapshot) {
     var snapshotData = snapshot.data!.questionData;
 
@@ -106,24 +115,17 @@ class _QuestionScreenState extends State<QuestionScreen> {
         // stream: null,
         builder: (context, state) {
       return Container(
-        height: 50.h,
+        height: 30.h,
         child: ListView.builder(
           itemBuilder: (context, index) {
-            //
+            var options = snapshotData[mainIndex]
+                .options
+                .toMap(); // options from firestore db
 
-            // var _ = model.getAnsKeys(mainIndex,
-            //     index); // The a key that reps a value (option) i.e A, B...
-
-            // var _v = model.getAnsValues(mainIndex,
-            //     index); // The map value that holds an option of a question
-
-            var options =
-                snapshotData[mainIndex].options; // options from firestore db
-
-            var _k = options.toMap().keys.toList()[
+            var _k = options.keys.toList()[
                 index]; // convert options keys to list and assign the value at index to _k
 
-            var _v = options.toMap().values.toList()[
+            var _v = options.values.toList()[
                 index]; // convert options values to list and assign the value at index to _v
 
             model.controllerIndexValue = mainIndex;
@@ -155,7 +157,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
   }
 
   //
-  Container buildButtonContainer(
+  _buildButtonContainer(
       QuestionViewModel model, AsyncSnapshot<QAModel> snapshot) {
     var snapshotData = snapshot.data!.questionData;
 
@@ -180,8 +182,9 @@ class _QuestionScreenState extends State<QuestionScreen> {
                   style: TextStyle(color: Colors.white),
                 ),
                 style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(AppColors.brown)),
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(AppColors.brown),
+                ),
               ),
 
               TextButton(
@@ -218,25 +221,54 @@ class _QuestionScreenState extends State<QuestionScreen> {
               ),
             ),
           ),
+        ],
+      ),
+    );
+  }
 
-          /// Container testing CountDownTimer
-          // Container(
-          //   width: 60.0,
-          //   padding: EdgeInsets.only(top: 3.0, right: 4.0),
-          //   child: CountDownTimer(
-          //     secondsRemaining: 3600,
-          //     whenTimeExpires: () {
-          //       // setState(() {
-          //       //   hasTimerStopped = true;
-          //       // });
-          //     },
-          //     countDownTimerStyle: TextStyle(
-          //       color: Color(0XFFf5a623),
-          //       fontSize: 17.0,
-          //       height: 1.2,
-          //     ),
-          //   ),
-          // ),
+  _buildTimer() {
+    return Container(
+      width: 10.h,
+      height: 5.h,
+      padding: EdgeInsets.only(top: 3.0, right: 4.0),
+      child: CountDownTimer(
+        secondsRemaining: 3600,
+        whenTimeExpires: () {
+          // setState(() {
+          //   hasTimerStopped = true;
+          // });
+        },
+        countDownTimerStyle: TextStyle(
+          color: Colors.white,
+          fontSize: 20.0,
+          height: 1.2,
+        ),
+      ),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+          color: Colors.blue),
+    );
+  }
+
+  _buildCameraDisplay() {
+    return Container(
+      width: 20.w,
+      height: 15.h,
+      color: Colors.black,
+    );
+  }
+
+  _buildCameraAndTimer() {
+    return Container(
+      width: 100.w,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          // timer
+          _buildTimer(),
+
+          // camera display
+          _buildCameraDisplay(),
         ],
       ),
     );
