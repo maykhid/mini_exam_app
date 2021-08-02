@@ -1,13 +1,10 @@
 import 'package:exam_cheat_detector/app/route_generator.dart';
 import 'package:exam_cheat_detector/ui/screens/home/home.dart';
 import 'package:exam_cheat_detector/ui/screens/landing/landing.dart';
+import 'package:exam_cheat_detector/ui/screens/landing/landing_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
-
-import 'package:exam_cheat_detector/app/locator.dart';
-import 'package:exam_cheat_detector/ui/screens/question/question_screen.dart';
-import 'package:exam_cheat_detector/ui/screens/question/question_view_model.dart';
 
 import 'base_view/base_view_model.dart';
 
@@ -37,7 +34,7 @@ class _ExamAppState extends State<ExamApp> {
               create: (_) => BaseViewModel(),
             ),
             ChangeNotifierProvider(
-              create: (_) => QuestionViewModel(firestoreDBUseCase: locator()),
+              create: (_) => LandingViewModel(),
             ),
           ],
           builder: (context, snapshot) {

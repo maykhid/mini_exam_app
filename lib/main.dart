@@ -1,6 +1,4 @@
 import 'package:exam_cheat_detector/app/locator.dart';
-// import 'package:exam_cheat_detector/ui/landing/landing.dart';
-// import 'package:exam_cheat_detector/ui/question/question_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -12,7 +10,11 @@ import 'app/locator.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp();
+  await Firebase.initializeApp()
+      .whenComplete(() => print('FirebaseApp Initializing done'))
+      .then((value) => print('FirebaseApp ${value.name} Initialized'))
+      .onError((error, stackTrace) =>
+          print('Error: $error, StackTrace: $stackTrace'));
 
   await setUpLocator();
 
