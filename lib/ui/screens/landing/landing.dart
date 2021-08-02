@@ -1,11 +1,13 @@
-import 'package:exam_cheat_detector/app/consts/app_colors.dart';
-import 'package:exam_cheat_detector/app/strings/app_strings.dart';
-import 'package:exam_cheat_detector/ui/landing/landing_view_model.dart';
-import 'package:exam_cheat_detector/ui/widgets/buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+
+import 'package:exam_cheat_detector/app/consts/app_colors.dart';
+import 'package:exam_cheat_detector/app/strings/app_strings.dart';
+import 'package:exam_cheat_detector/ui/widgets/buttons.dart';
+
+import 'landing_view_model.dart';
 
 class LandingScreen extends StatelessWidget {
   @override

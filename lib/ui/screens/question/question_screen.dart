@@ -1,13 +1,15 @@
-import 'package:exam_cheat_detector/app/consts/app_colors.dart';
-import 'package:exam_cheat_detector/app/base_view/base_view.dart';
-import 'package:exam_cheat_detector/core/data_models/QA_model.dart';
-import 'package:exam_cheat_detector/core/entities/firestore_params.dart';
-import 'package:exam_cheat_detector/ui/question/question_view_model.dart';
-import 'package:exam_cheat_detector/ui/widgets/count_down_timer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+
+import 'package:exam_cheat_detector/app/consts/app_colors.dart';
+import 'package:exam_cheat_detector/app/base_view/base_view.dart';
+import 'package:exam_cheat_detector/core/data_models/QA_model.dart';
+import 'package:exam_cheat_detector/core/entities/firestore_params.dart';
+import 'package:exam_cheat_detector/ui/widgets/count_down_timer.dart';
+
+import 'question_view_model.dart';
 
 class QuestionScreen extends StatefulWidget {
   QuestionScreen({required this.collection, required this.doc});

@@ -67,6 +67,7 @@ class _CountDownTimerState extends State<CountDownTimer>
 
   @override
   void didUpdateWidget(CountDownTimer oldWidget) {
+    super.didUpdateWidget(oldWidget);
     if (widget.secondsRemaining != oldWidget.secondsRemaining) {
       setState(() {
         duration = new Duration(seconds: widget.secondsRemaining);

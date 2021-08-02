@@ -1,9 +1,10 @@
-import 'package:exam_cheat_detector/app/locator.dart';
-import 'package:exam_cheat_detector/ui/question/question_screen.dart';
-import 'package:exam_cheat_detector/ui/question/question_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+
+import 'package:exam_cheat_detector/app/locator.dart';
+import 'package:exam_cheat_detector/ui/screens/question/question_screen.dart';
+import 'package:exam_cheat_detector/ui/screens/question/question_view_model.dart';
 
 import 'base_view/base_view_model.dart';
 
@@ -21,22 +22,23 @@ class _ExamAppState extends State<ExamApp> {
     return Sizer(
       builder: (context, _, __) {
         return MultiProvider(
-            providers: [
-              ChangeNotifierProvider(
-                create: (_) => BaseViewModel(),
+          providers: [
+            ChangeNotifierProvider(
+              create: (_) => BaseViewModel(),
+            ),
+            ChangeNotifierProvider(
+              create: (_) => QuestionViewModel(firestoreDBUseCase: locator()),
+            ),
+          ],
+          builder: (context, snapshot) {
+            return MaterialApp(
+              home: QuestionScreen(
+                collection: 'newcollection',
+                doc: 'newdoc',
               ),
-              ChangeNotifierProvider(
-                create: (_) => QuestionViewModel(firestoreDBUseCase: locator()),
-              ),
-            ],
-            builder: (context, snapshot) {
-              return MaterialApp(
-                home: QuestionScreen(
-                  collection: 'newcollection',
-                  doc: 'newdoc',
-                ),
-              );
-            });
+            );
+          },
+        );
       },
     );
   }
