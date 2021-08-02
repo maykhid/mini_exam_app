@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
 class Home extends StatefulWidget {
+  static const routeName = "/home";
   @override
   _HomeState createState() => _HomeState();
 }

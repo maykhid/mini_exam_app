@@ -1,3 +1,6 @@
+import 'package:exam_cheat_detector/app/route_generator.dart';
+import 'package:exam_cheat_detector/ui/screens/home/home.dart';
+import 'package:exam_cheat_detector/ui/screens/landing/landing.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -15,7 +18,14 @@ class ExamApp extends StatefulWidget {
 }
 
 class _ExamAppState extends State<ExamApp> {
-// TODO: 1) create setInitialRoute() with MainScreen and AuthHolders. The screen would be decided on Authentication state
+  String setInitialRoute(bool value) {
+    // TODO: check if user is logged in then assign route, for now use preffered bool value
+    if (value) {
+      return LandingScreen.routeName;
+    } else {
+      return Home.routeName;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,10 +42,8 @@ class _ExamAppState extends State<ExamApp> {
           ],
           builder: (context, snapshot) {
             return MaterialApp(
-              home: QuestionScreen(
-                collection: 'newcollection',
-                doc: 'newdoc',
-              ),
+              initialRoute: setInitialRoute(true),
+              onGenerateRoute: RouteGenerator.generateRoute,
             );
           },
         );

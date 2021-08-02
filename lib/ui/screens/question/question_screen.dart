@@ -12,6 +12,8 @@ import 'package:exam_cheat_detector/ui/widgets/count_down_timer.dart';
 import 'question_view_model.dart';
 
 class QuestionScreen extends StatefulWidget {
+  static const routeName = "/questionScreen";
+
   QuestionScreen({required this.collection, required this.doc});
   final String collection;
   final String doc;

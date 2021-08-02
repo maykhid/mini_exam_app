@@ -10,6 +10,7 @@ import 'package:exam_cheat_detector/ui/widgets/buttons.dart';
 import 'landing_view_model.dart';
 
 class LandingScreen extends StatelessWidget {
+  static const routeName = "/landing";
   @override
   Widget build(BuildContext context) {
     return Consumer<LandingViewModel>(builder: (context, model, __) {
