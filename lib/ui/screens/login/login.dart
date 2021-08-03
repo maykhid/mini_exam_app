@@ -38,10 +38,15 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
 
                 // enmail text field
-                CustomTextField(),
+                CustomTextField(
+                  hintText: 'Email',
+                ),
 
                 // password Textfield
-                CustomTextField(),
+                CustomTextField(
+                  obscureText: true,
+                  hintText: 'Password',
+                ),
 
                 // forget password text
                 Align(

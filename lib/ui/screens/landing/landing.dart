@@ -84,11 +84,12 @@ class LandingScreen extends StatelessWidget {
                       children: [
                         //
                         Button.rounded(
-                            width: 45.h,
-                            height: 9.h,
-                            color: AppColors.brownRed,
-                            buttonText: AppStrings.get_started,
-                            onPressed: () {}),
+                          width: 45.h,
+                          height: 9.h,
+                          color: AppColors.brownRed,
+                          buttonText: AppStrings.get_started,
+                          onPressed: () => model.signup(),
+                        ),
 
                         //
                         Button.rounded(
