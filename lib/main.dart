@@ -6,6 +6,7 @@ import 'app/exam_app.dart';
 import 'app/locator.dart';
 
 // import 'app/base_view/base_view_model.dart';
+/// Note to self: Desired fonts pacifico and Open sans condensed
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

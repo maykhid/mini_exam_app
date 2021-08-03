@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 import 'base_view/base_view_model.dart';
+import 'consts/app_themes.dart';
 
 class ExamApp extends StatefulWidget {
   // This widget is the root of your application.
@@ -43,6 +44,7 @@ class _ExamAppState extends State<ExamApp> {
           ],
           builder: (context, snapshot) {
             return MaterialApp(
+              theme: AppTheme.lightTheme(context),
               navigatorKey: locator<NavigationService>()
                   .navigatorKey, // navigator key from NavigationService
               initialRoute: setInitialRoute(true),

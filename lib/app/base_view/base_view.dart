@@ -24,16 +24,15 @@ class BaseView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: backgroundColor,
-      body: SingleChildScrollView(
-        child: Container(
-          padding: padding ??
-              EdgeInsets.symmetric(
-                horizontal: 100.w * 0.03,
-                vertical: 3.h,
-              ),
-          //
-          child: body!,
-        ),
+      body: Container(
+        //  remember that SingleChildScrollView was here
+        padding: padding ??
+            EdgeInsets.symmetric(
+              horizontal: 100.w * 0.03,
+              vertical: 3.h,
+            ),
+        //
+        child: body!,
       ),
     );
   }
