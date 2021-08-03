@@ -1,7 +1,11 @@
+import 'package:exam_cheat_detector/app/locator.dart';
+import 'package:exam_cheat_detector/app/navigation_service.dart';
 import 'package:exam_cheat_detector/app/route_generator.dart';
 import 'package:exam_cheat_detector/ui/screens/home/home.dart';
 import 'package:exam_cheat_detector/ui/screens/landing/landing.dart';
 import 'package:exam_cheat_detector/ui/screens/landing/landing_view_model.dart';
+import 'package:exam_cheat_detector/ui/screens/login/login.dart';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -34,13 +38,18 @@ class _ExamAppState extends State<ExamApp> {
               create: (_) => BaseViewModel(),
             ),
             ChangeNotifierProvider(
-              create: (_) => LandingViewModel(),
+              create: (_) => LandingViewModel(navigationService: locator()),
             ),
           ],
           builder: (context, snapshot) {
             return MaterialApp(
+              navigatorKey: locator<NavigationService>()
+                  .navigatorKey, // navigator key from NavigationService
               initialRoute: setInitialRoute(true),
               onGenerateRoute: RouteGenerator.generateRoute,
+              routes: {
+                '/login': (context) => LoginScreen(),
+              },
             );
           },
         );

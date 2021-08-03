@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:exam_cheat_detector/app/navigation_service.dart';
 import 'package:get_it/get_it.dart';
 
 import 'package:exam_cheat_detector/core/repositories/firestore_repo.dart';
@@ -10,7 +11,8 @@ var locator = GetIt.instance;
 
 Future<void> setUpLocator() async {
   locator
-
+// navigation service
+    ..registerLazySingleton<NavigationService>(() => NavigationService())
 // external dependencies
     ..registerLazySingleton(() => FirebaseFirestore.instance)
 

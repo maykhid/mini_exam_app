@@ -1,4 +1,6 @@
 import 'package:exam_cheat_detector/app/base_view/base_view_model.dart';
+import 'package:exam_cheat_detector/app/navigation_service.dart';
+import 'package:exam_cheat_detector/ui/screens/login/login.dart';
 
 class LandingViewModel extends BaseViewModel {
   // final FirebaseDBUseCaseImpl firestoreDBusecaseImpl;
@@ -12,4 +14,17 @@ class LandingViewModel extends BaseViewModel {
   //     throw Exception(e);
   //   }
   // }
+  final NavigationService navigationService;
+  LandingViewModel({required this.navigationService});
+
+  /// Dummy login logic
+  login({bool success = true}) async {
+    // await Future.delayed(Duration(seconds: 1));
+
+    if (!success) {
+      print('Error on Login');
+    } else {
+      navigationService.navigateTo(LoginScreen.routeName);
+    }
+  }
 }
