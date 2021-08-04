@@ -43,7 +43,7 @@ class _ExamAppState extends State<ExamApp> {
               create: (_) => LandingViewModel(navigationService: locator()),
             ),
           ],
-          builder: (context, snapshot) {
+          builder: (context, _) {
             return MaterialApp(
               theme: AppTheme.lightTheme(context),
               navigatorKey: locator<NavigationService>()

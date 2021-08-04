@@ -88,7 +88,7 @@ class LandingScreen extends StatelessWidget {
                           height: 9.h,
                           color: AppColors.brownRed,
                           buttonText: AppStrings.get_started,
-                          onPressed: () => model.signup(),
+                          onPressed: () => model.gotoSignUp(),
                         ),
 
                         //
@@ -97,7 +97,7 @@ class LandingScreen extends StatelessWidget {
                           height: 9.h,
                           color: AppColors.lightPurple,
                           buttonText: AppStrings.log_in,
-                          onPressed: () => model.login(),
+                          onPressed: () => model.gotoLogin(),
                         )
                       ],
                     ),

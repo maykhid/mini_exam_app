@@ -18,24 +18,11 @@ class LandingViewModel extends BaseViewModel {
   final NavigationService navigationService;
   LandingViewModel({required this.navigationService});
 
-  /// Dummy login logic
-  login({bool success = true}) async {
-    // await Future.delayed(Duration(seconds: 1));
-
-    if (!success) {
-      print('Error on Login');
-    } else {
-      navigationService.navigateTo(LoginScreen.routeName);
-    }
+  gotoLogin() async {
+    navigationService.navigateTo(LoginScreen.routeName);
   }
 
-  signup({bool success = true}) async {
-    // await Future.delayed(Duration(seconds: 1));
-
-    if (!success) {
-      print('Error on sign up');
-    } else {
-      navigationService.navigateTo(SignUpScreen.routeName);
-    }
+  gotoSignUp() {
+    navigationService.navigateTo(SignUpScreen.routeName);
   }
 }
