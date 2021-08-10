@@ -2,7 +2,6 @@ import 'package:exam_cheat_detector/app/base_view/base_view_model.dart';
 import 'package:exam_cheat_detector/core/data_models/QA_model.dart';
 import 'package:exam_cheat_detector/core/entities/firestore_params.dart';
 import 'package:exam_cheat_detector/core/errors/server_error.dart';
-import 'package:exam_cheat_detector/core/services/dummy_data/q_a/random.dart';
 import 'package:exam_cheat_detector/core/use_cases/firebasedb_usecase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
@@ -20,7 +19,7 @@ class QuestionViewModel extends BaseViewModel {
 
   SwiperController swiperController = SwiperController();
 
-  var modelQuestions = questions;
+  // var modelQuestions = questions;
   int controllerIndexValue = 0;
 
   /// Extract questions using the index of [Swiper] i.e mainIndex
