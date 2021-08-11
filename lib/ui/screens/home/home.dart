@@ -22,9 +22,10 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return BaseView(
       body: ChangeNotifierProvider(
-          create: (_) => HomeViewModel(navigationService: locator()),
-          builder: (context, snapshot) {
-            return Builder(builder: (context) {
+        create: (_) => HomeViewModel(navigationService: locator()),
+        builder: (context, snapshot) {
+          return Builder(
+            builder: (context) {
               var homeViewModel = Provider.of<HomeViewModel>(context);
 
               return SingleChildScrollView(
@@ -58,7 +59,9 @@ class _HomeState extends State<Home> {
                       buttonColor: AppColors.lightPurple,
                       buttonText: 'English',
                       onTap: () => homeViewModel.loadQuestionScreen(
-                          'collection-QA', 'english'),
+                        'collection-QA',
+                        'english',
+                      ),
                     ),
 
                     SizedBox(height: 2.h),
@@ -67,7 +70,9 @@ class _HomeState extends State<Home> {
                       buttonColor: AppColors.brownRed,
                       buttonText: 'Geography',
                       onTap: () => homeViewModel.loadQuestionScreen(
-                          'collection-QA', 'geography'),
+                        'collection-QA',
+                        'geography',
+                      ),
                     ),
 
                     SizedBox(height: 2.h),
@@ -76,7 +81,9 @@ class _HomeState extends State<Home> {
                       buttonColor: AppColors.lightPurple,
                       buttonText: 'Biology',
                       onTap: () => homeViewModel.loadQuestionScreen(
-                          'collection-QA', 'biology'),
+                        'collection-QA',
+                        'biology',
+                      ),
                     ),
 
                     SizedBox(height: 2.h),
@@ -88,8 +95,10 @@ class _HomeState extends State<Home> {
                   ],
                 ),
               );
-            });
-          }),
+            },
+          );
+        },
+      ),
     );
   }
 }
@@ -119,7 +128,10 @@ class HomeMenuButton extends StatelessWidget {
         child: Center(
           child: Text(
             buttonText,
-            style: TextStyle(color: Colors.white, fontSize: 25.sp),
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 25.sp,
+            ),
           ),
         ),
       ),

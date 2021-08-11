@@ -10,6 +10,7 @@ import 'package:exam_cheat_detector/ui/screens/signup/signup.dart';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:provider/single_child_widget.dart';
 import 'package:sizer/sizer.dart';
 
 import 'base_view/base_view_model.dart';
@@ -36,14 +37,7 @@ class _ExamAppState extends State<ExamApp> {
     return Sizer(
       builder: (context, _, __) {
         return MultiProvider(
-          providers: [
-            ChangeNotifierProvider(
-              create: (_) => BaseViewModel(),
-            ),
-            ChangeNotifierProvider(
-              create: (_) => LandingViewModel(navigationService: locator()),
-            ),
-          ],
+          providers: _providers,
           builder: (context, _) {
             return MaterialApp(
               theme: AppTheme.lightTheme(context),
@@ -51,11 +45,7 @@ class _ExamAppState extends State<ExamApp> {
                   .navigatorKey, // navigator key from NavigationService
               initialRoute: setInitialRoute(true),
               onGenerateRoute: RouteGenerator.generateRoute,
-              routes: {
-                '/login': (context) => LoginScreen(),
-                '/signUp': (context) => SignUpScreen(),
-                '/questionScreen': (context) => QuestionScreen(),
-              },
+              routes: _routes,
             );
           },
         );
@@ -63,3 +53,19 @@ class _ExamAppState extends State<ExamApp> {
     );
   }
 }
+
+List<SingleChildWidget> _providers = [
+  ChangeNotifierProvider(
+    create: (_) => BaseViewModel(),
+  ),
+  ChangeNotifierProvider(
+    create: (_) => LandingViewModel(navigationService: locator()),
+  ),
+];
+
+//
+Map<String, Widget Function(BuildContext)> _routes = {
+  '/login': (context) => LoginScreen(),
+  '/signUp': (context) => SignUpScreen(),
+  '/questionScreen': (context) => QuestionScreen(),
+};
