@@ -5,6 +5,7 @@ import 'package:exam_cheat_detector/ui/screens/home/home.dart';
 import 'package:exam_cheat_detector/ui/screens/landing/landing.dart';
 import 'package:exam_cheat_detector/ui/screens/landing/landing_view_model.dart';
 import 'package:exam_cheat_detector/ui/screens/login/login.dart';
+import 'package:exam_cheat_detector/ui/screens/question/question_screen.dart';
 import 'package:exam_cheat_detector/ui/screens/signup/signup.dart';
 
 import 'package:flutter/material.dart';
@@ -53,6 +54,7 @@ class _ExamAppState extends State<ExamApp> {
               routes: {
                 '/login': (context) => LoginScreen(),
                 '/signUp': (context) => SignUpScreen(),
+                '/questionScreen': (context) => QuestionScreen(),
               },
             );
           },

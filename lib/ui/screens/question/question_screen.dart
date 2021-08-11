@@ -1,3 +1,4 @@
+import 'package:exam_cheat_detector/app/locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 import 'package:provider/provider.dart';
@@ -13,10 +14,6 @@ import 'question_view_model.dart';
 
 class QuestionScreen extends StatefulWidget {
   static const routeName = "/questionScreen";
-
-  QuestionScreen({required this.collection, required this.doc});
-  final String collection;
-  final String doc;
 
   @override
   _QuestionScreenState createState() => _QuestionScreenState();
@@ -34,48 +31,57 @@ class _QuestionScreenState extends State<QuestionScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<QuestionViewModel>(builder: (context, model, child) {
-      return BaseView(
-        body: FutureBuilder<QAModel>(
-          future: model.pullQA(FirestoreParams(
-              collection: widget.collection, document: widget.doc)),
-          builder: (context, snapshot) {
-            if (snapshot.hasData &&
-                snapshot.connectionState == ConnectionState.done) {
-              //
-              stateList = List<String>.filled(
-                //
-                snapshot.data!.questionData.length,
-                '',
-                growable: false,
-              ); // assign to stateList, a list of known length (length of questionData) with '' stored at each index
+    final args = ModalRoute.of(context)!.settings.arguments
+        as FirestoreParams; // args to get argument passed from the previous screen on navigating to this screen
 
-              answerList = model.generateAnswerAsList(
-                  snapshot); // assign to answerList, a list of all answer values stored in firestore
+    return ChangeNotifierProvider(
+        create: (_) => QuestionViewModel(firestoreDBUseCase: locator()),
+        builder: (context, snapshot) {
+          return Builder(builder: (context) {
+            var model = Provider.of<QuestionViewModel>(context);
 
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    // camera and timer
-                    _buildCameraAndTimer(),
+            return BaseView(
+              body: FutureBuilder<QAModel>(
+                future: model.pullQA(FirestoreParams(
+                    collection: args.collection, document: args.document)),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData &&
+                      snapshot.connectionState == ConnectionState.done) {
+                    //
+                    stateList = List<String>.filled(
+                      //
+                      snapshot.data!.questionData.length,
+                      '',
+                      growable: false,
+                    ); // assign to stateList, a list of known length (length of questionData) with '' stored at each index
 
-                    SizedBox(height: 5.h),
-                    // swiper / question and answer
-                    _buildSwiperContainer(model, snapshot),
+                    answerList = model.generateAnswerAsList(
+                        snapshot); // assign to answerList, a list of all answer values stored in firestore
 
-                    // buttons
-                    _buildButtonContainer(model, snapshot),
-                  ],
-                ),
-              );
-            }
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          // camera and timer
+                          _buildCameraAndTimer(),
 
-            return Container();
-          },
-        ),
-      );
-    });
+                          SizedBox(height: 5.h),
+                          // swiper / question and answer
+                          _buildSwiperContainer(model, snapshot),
+
+                          // buttons
+                          _buildButtonContainer(model, snapshot),
+                        ],
+                      ),
+                    );
+                  }
+
+                  return Container();
+                },
+              ),
+            );
+          });
+        });
   }
 
   // The Swiper that displays the test
