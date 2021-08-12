@@ -3,14 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
 class CustomTextField extends StatelessWidget {
-  CustomTextField({required this.hintText, this.obscureText = false});
+  CustomTextField({
+    required this.hintText,
+    this.obscureText = false,
+    this.controller,
+    this.keyboardType,
+  });
   final String hintText;
   final bool obscureText;
+  final TextEditingController? controller;
+  final TextInputType? keyboardType;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: controller,
       obscureText: obscureText,
+      keyboardType: keyboardType,
       style: TextStyle(
         color: Colors.white,
         fontSize: 13.sp,

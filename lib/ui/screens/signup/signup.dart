@@ -20,7 +20,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => SignUpViewModel(navigationService: locator()),
+      create: (_) => SignUpViewModel(
+        navigationService: locator(),
+        firebaseAuthUseCase: locator(),
+      ),
       child: Builder(builder: (context) {
         // Builder widget is used in this case so that we can get a context that is directly below ChangeNotifierProvider
 
@@ -53,22 +56,34 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         // name
                         CustomTextField(
                           hintText: 'First name',
+                          controller: signUpModel.firstnameController,
                         ),
 
                         // surname
                         CustomTextField(
                           hintText: 'Surname',
+                          controller: signUpModel.surnameController,
                         ),
 
                         // email
                         CustomTextField(
                           hintText: 'Email',
+                          controller: signUpModel.emailController,
+                          keyboardType: TextInputType.emailAddress,
                         ),
 
                         // password
                         CustomTextField(
                           obscureText: true,
                           hintText: 'Password',
+                          controller: signUpModel.passwordController,
+                        ),
+
+                        // confirm password
+                        CustomTextField(
+                          obscureText: true,
+                          hintText: 'Confirm Password',
+                          controller: signUpModel.confirmPasswordController,
                         ),
 
                         TextButton(
@@ -78,7 +93,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             fixedSize: MaterialStateProperty.all<Size>(
                                 Size(25.w, 5.h)),
                           ),
-                          onPressed: () async => signUpModel.signUp(),
+
+                          // validate and sign up
+                          onPressed: () async =>
+                              signUpModel.validateInput(context),
+
                           child: Text('Sign up'),
                         ),
 

@@ -56,7 +56,7 @@ class _ExamAppState extends State<ExamApp> {
 
 List<SingleChildWidget> _providers = [
   ChangeNotifierProvider(
-    create: (_) => BaseViewModel(),
+    create: (_) => BaseViewModel(firebaseAuthUseCase: locator()),
   ),
   ChangeNotifierProvider(
     create: (_) => LandingViewModel(navigationService: locator()),
