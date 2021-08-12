@@ -10,7 +10,7 @@ class AppTheme {
       textSelectionTheme: TextSelectionThemeData(
         cursorColor: AppColors.brown,
       ),
-      textTheme: GoogleFonts.openSansCondensedTextTheme(
+      textTheme: GoogleFonts.poppinsTextTheme(
         Theme.of(context).textTheme,
       ),
       textButtonTheme: TextButtonThemeData(

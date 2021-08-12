@@ -16,6 +16,9 @@ class NavigationService {
     return navigatorKey.currentState!.pushNamed(routeName);
   }
 
+  navigateToAndPopPrevious(String routeName) =>
+      navigatorKey.currentState!.popAndPushNamed(routeName);
+
   void navigateBack() {
     return navigatorKey.currentState!.pop();
   }

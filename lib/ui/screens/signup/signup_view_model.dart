@@ -72,7 +72,7 @@ class SignUpViewModel extends BaseViewModel {
     }, (success) {
       //success
       if (success)
-        Navigator.pushNamed(context, Home.routeName);
+        navigationService.navigateToAndPopPrevious(Home.routeName);
       else
         showFlushBar(context,
             title: "SignUp Error", message: "something went wrong");

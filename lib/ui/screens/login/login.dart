@@ -23,7 +23,10 @@ class _LoginScreenState extends State<LoginScreen> {
     // var provider = Provider.of<LandingViewModel>(context);
 
     return ChangeNotifierProvider(
-      create: (_) => LoginViewModel(navigationService: locator()),
+      create: (_) => LoginViewModel(
+        navigationService: locator(),
+        firebaseAuthUseCase: locator(),
+      ),
       child: Builder(
           // stream: null,
           builder: (context) {
@@ -54,12 +57,15 @@ class _LoginScreenState extends State<LoginScreen> {
                     // enmail text field
                     CustomTextField(
                       hintText: 'Email',
+                      keyboardType: TextInputType.emailAddress,
+                      controller: loginModel.emailController,
                     ),
 
                     // password Textfield
                     CustomTextField(
                       obscureText: true,
                       hintText: 'Password',
+                      controller: loginModel.passwordController,
                     ),
 
                     // forget password text
@@ -78,7 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         fixedSize:
                             MaterialStateProperty.all<Size>(Size(25.w, 5.h)),
                       ),
-                      onPressed: () async => await loginModel.login(),
+                      onPressed: () => loginModel.validateInput(context),
                       child: Text('Login'),
                     ),
 
