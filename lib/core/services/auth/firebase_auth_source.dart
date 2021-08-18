@@ -2,17 +2,41 @@ import 'package:exam_cheat_detector/core/entities/auth_credentials.dart';
 import 'package:exam_cheat_detector/core/errors/firebase_error_codes.dart';
 import 'package:exam_cheat_detector/core/errors/server_error.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+
+// enum UserStatus {
+//   authenticated,
+//   unauthenticated,
+//   uninitialized,
+// }
 
 abstract class FirebaseAuthSource {
-  Future<bool> isUserAuthenticated();
+  // Future<bool> isUserAuthenticated();
   Future<UserCredential> createUser(AuthCredentials credentials);
   Future<UserCredential> signIn(AuthCredentials credentials);
+  Stream<User?>? get onAuthStateChanged;
 }
 
-class FirebaseAuthSourceImpl implements FirebaseAuthSource {
+class FirebaseAuthSourceImpl with ChangeNotifier implements FirebaseAuthSource {
   final FirebaseAuth firebaseAuth;
+  // late final User _user;
+  // UserStatus _userStatus = UserStatus.uninitialized;
+
+  // UserStatus get userStatus => _userStatus;
 
   FirebaseAuthSourceImpl({required this.firebaseAuth});
+
+  // FirebaseAuthSourceImpl({required this.firebaseAuth}) {
+  //   firebaseAuth.authStateChanges().listen(onAuthStateChanged);
+  //   print('FirebaaseAuth source ran ${_userStatus.toString()}');
+  // }
+
+  // updateStatus(UserStatus status) {
+  //   _userStatus = status;
+  //   print(
+  //       'This is the status #on updateStatus Auth -> ${_userStatus.toString()}');
+  //   notifyListeners();
+  // }
 
   @override
   Future<UserCredential> createUser(AuthCredentials credentials) async {
@@ -33,10 +57,12 @@ class FirebaseAuthSourceImpl implements FirebaseAuthSource {
     }
   }
 
-  @override
-  Future<bool> isUserAuthenticated() async {
-    return firebaseAuth.currentUser != null;
-  }
+  // @override
+  // Future<bool> isUserAuthenticated() async {
+  //   return firebaseAuth.currentUser != null;
+  // }
+
+  Stream<User?>? get onAuthStateChanged => firebaseAuth.authStateChanges();
 
   @override
   Future<UserCredential> signIn(AuthCredentials credentials) async {
@@ -54,4 +80,13 @@ class FirebaseAuthSourceImpl implements FirebaseAuthSource {
       throw ServerError(message);
     }
   }
+
+  // Future<void> onAuthStateChanged(User? user) async {
+  //   if (user == null) {
+  //     updateStatus(UserStatus.unauthenticated);
+  //   } else {
+  //     _user = user;
+  //     updateStatus(UserStatus.authenticated);
+  //   }
+  // }
 }

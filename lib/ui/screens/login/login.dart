@@ -25,77 +25,77 @@ class _LoginScreenState extends State<LoginScreen> {
     return ChangeNotifierProvider(
       create: (_) => LoginViewModel(
         navigationService: locator(),
-        firebaseAuthUseCase: locator(),
       ),
       child: Builder(
-          // stream: null,
-          builder: (context) {
-        var loginModel = Provider.of<LoginViewModel>(context);
-        // var signUpModel = Provider.of<LoginViewModel>(context);
+        // stream: null,
+        builder: (context) {
+          var loginModel = Provider.of<LoginViewModel>(context);
+          // var signUpModel = Provider.of<LoginViewModel>(context);
 
-        return BaseView(
-          body: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Container(
-                height: 60.h,
-                width: 100.w,
-                // color: Colors.black,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    // Welcome back text
-                    Text(
-                      'Welcome\n Back',
-                      style: GoogleFonts.pacifico(
-                        fontSize: 25.sp,
-                        color: AppColors.lightPurple,
+          return BaseView(
+            body: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Container(
+                  height: 60.h,
+                  width: 100.w,
+                  // color: Colors.black,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      // Welcome back text
+                      Text(
+                        'Welcome\n Back',
+                        style: GoogleFonts.pacifico(
+                          fontSize: 25.sp,
+                          color: AppColors.lightPurple,
+                        ),
                       ),
-                    ),
 
-                    // enmail text field
-                    CustomTextField(
-                      hintText: 'Email',
-                      keyboardType: TextInputType.emailAddress,
-                      controller: loginModel.emailController,
-                    ),
-
-                    // password Textfield
-                    CustomTextField(
-                      obscureText: true,
-                      hintText: 'Password',
-                      controller: loginModel.passwordController,
-                    ),
-
-                    // forget password text
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: Text(
-                        'Forgot password?',
+                      // enmail text field
+                      CustomTextField(
+                        hintText: 'Email',
+                        keyboardType: TextInputType.emailAddress,
+                        controller: loginModel.emailController,
                       ),
-                    ),
 
-                    // login button
-                    TextButton(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                            AppColors.lightPurple),
-                        fixedSize:
-                            MaterialStateProperty.all<Size>(Size(25.w, 5.h)),
+                      // password Textfield
+                      CustomTextField(
+                        obscureText: true,
+                        hintText: 'Password',
+                        controller: loginModel.passwordController,
                       ),
-                      onPressed: () => loginModel.validateInput(context),
-                      child: Text('Login'),
-                    ),
 
-                    // new user? sign up
-                  ],
+                      // forget password text
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: Text(
+                          'Forgot password?',
+                        ),
+                      ),
+
+                      // login button
+                      TextButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              AppColors.lightPurple),
+                          fixedSize:
+                              MaterialStateProperty.all<Size>(Size(25.w, 5.h)),
+                        ),
+                        onPressed: () => loginModel.validateInput(context),
+                        child: Text('Login'),
+                      ),
+
+                      // new user? sign up
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          ),
-        );
-      }),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }

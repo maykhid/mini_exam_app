@@ -1,12 +1,13 @@
 import 'package:dartz/dartz.dart';
 import 'package:exam_cheat_detector/core/entities/auth_credentials.dart';
-import 'package:exam_cheat_detector/core/entities/user_data.dart';
 import 'package:exam_cheat_detector/core/errors/server_error.dart';
 import 'package:exam_cheat_detector/core/failure/failure.dart';
 import 'package:exam_cheat_detector/core/services/auth/firebase_auth_source.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 abstract class FirebaseAuthRepo {
-  Future<bool> isUserAuthenticated();
+  // Future<bool> isUserAuthenticated();
+  Stream<User?>? get onAuthStateChanged;
   Future<Either<Failure, bool>> createUser(AuthCredentials credentials);
   Future<Either<Failure, bool>> signIn(AuthCredentials credentials);
 }
@@ -32,9 +33,9 @@ class FirebaseAuthRepoImpl implements FirebaseAuthRepo {
     }
   }
 
-  @override
-  Future<bool> isUserAuthenticated() async =>
-      await firebaseAuthSource.isUserAuthenticated();
+  // @override
+  // Future<bool> isUserAuthenticated() async =>
+  //     await firebaseAuthSource.isUserAuthenticated();
 
   @override
   Future<Either<Failure, bool>> signIn(AuthCredentials credentials) async {
@@ -45,4 +46,7 @@ class FirebaseAuthRepoImpl implements FirebaseAuthRepo {
       return Left(ServerFailure(error.message));
     }
   }
+
+  Stream<User?>? get onAuthStateChanged =>
+      firebaseAuthSource.onAuthStateChanged;
 }

@@ -2,14 +2,12 @@ import 'package:exam_cheat_detector/app/base_view/base_view_model.dart';
 import 'package:exam_cheat_detector/app/helpers/validators/string_validator.dart';
 import 'package:exam_cheat_detector/app/navigation_service.dart';
 import 'package:exam_cheat_detector/core/entities/auth_credentials.dart';
-import 'package:exam_cheat_detector/core/use_cases/firebase_auth_usecase.dart';
 import 'package:exam_cheat_detector/ui/screens/home/home.dart';
 import 'package:exam_cheat_detector/ui/widgets/show_flush_bar.dart';
 import 'package:flutter/material.dart';
 
 class SignUpViewModel extends BaseViewModel {
   final NavigationService navigationService;
-  final FirebaseAuthUseCase firebaseAuthUseCase;
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -17,19 +15,9 @@ class SignUpViewModel extends BaseViewModel {
   TextEditingController surnameController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
 
-  SignUpViewModel(
-      {required this.navigationService, required this.firebaseAuthUseCase});
-
-  // mimic signup for now
-  signUp({bool success = true}) async {
-    await Future.delayed(Duration(seconds: 1));
-
-    if (!success) {
-      print('Error on Login');
-    } else {
-      navigationService.navigateTo(Home.routeName);
-    }
-  }
+  SignUpViewModel({
+    required this.navigationService,
+  });
 
   void _message(BuildContext context, String text) {
     showFlushBar(context, title: "Validation Error", message: text);

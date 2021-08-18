@@ -22,7 +22,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return ChangeNotifierProvider(
       create: (_) => SignUpViewModel(
         navigationService: locator(),
-        firebaseAuthUseCase: locator(),
       ),
       child: Builder(builder: (context) {
         // Builder widget is used in this case so that we can get a context that is directly below ChangeNotifierProvider
