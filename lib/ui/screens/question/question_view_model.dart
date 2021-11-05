@@ -7,9 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 
 class QuestionViewModel extends BaseViewModel {
-  FirestoreDBUseCase firestoreDBUseCase;
+  // FirestoreDBUseCase firestoreDBUseCase;
 
-  QuestionViewModel({required this.firestoreDBUseCase});
+  // QuestionViewModel({required this.firestoreDBUseCase});
 
   // List<dynamic> stateList = List<dynamic>.filled(
   //   questions.length,
@@ -74,7 +74,7 @@ class QuestionViewModel extends BaseViewModel {
     return answer;
   }
 
-  score(List<String> answerList, List<String> stateList) {
+  int score(List<String> answerList, List<String> stateList) {
     int score = 0;
     for (int i = 0; i < answerList.length; i++) {
       if (answerList[i] == stateList[i]) {
@@ -82,5 +82,6 @@ class QuestionViewModel extends BaseViewModel {
       }
     }
     print(score);
+    return score;
   }
 }

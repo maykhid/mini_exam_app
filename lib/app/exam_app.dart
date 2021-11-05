@@ -1,12 +1,12 @@
 import 'package:exam_cheat_detector/app/locator.dart';
 import 'package:exam_cheat_detector/app/navigation_service.dart';
-import 'package:exam_cheat_detector/app/route_generator.dart';
 import 'package:exam_cheat_detector/ui/screens/home/home.dart';
 import 'package:exam_cheat_detector/ui/screens/landing/landing.dart';
 import 'package:exam_cheat_detector/ui/screens/landing/landing_view_model.dart';
 import 'package:exam_cheat_detector/ui/screens/login/login.dart';
 import 'package:exam_cheat_detector/ui/screens/question/question_screen.dart';
 import 'package:exam_cheat_detector/ui/screens/signup/signup.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -23,15 +23,6 @@ class ExamApp extends StatefulWidget {
 }
 
 class _ExamAppState extends State<ExamApp> {
-  String setInitialRoute(bool value) {
-    // TODO: check if user is logged in then assign route, for now use preffered bool value
-    if (value) {
-      return LandingScreen.routeName;
-    } else {
-      return Home.routeName;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Sizer(
@@ -39,13 +30,17 @@ class _ExamAppState extends State<ExamApp> {
         return MultiProvider(
           providers: _providers,
           builder: (context, _) {
-            return MaterialApp(
-              theme: AppTheme.lightTheme(context),
-              navigatorKey: locator<NavigationService>()
-                  .navigatorKey, // navigator key from NavigationService
-              initialRoute: setInitialRoute(true),
-              onGenerateRoute: RouteGenerator.generateRoute,
-              routes: _routes,
+            var baseView = Provider.of<BaseViewModel>(context);
+
+            return StreamBuilder<User?>(
+              stream: baseView.onAuthStateChanged, // A stream of Userr
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.active) {
+                  print(snapshot.data);
+                  return _materialApp(context, snapshot);
+                }
+                return Container();
+              },
             );
           },
         );
@@ -65,7 +60,21 @@ List<SingleChildWidget> _providers = [
 
 //
 Map<String, Widget Function(BuildContext)> _routes = {
-  '/login': (context) => LoginScreen(),
-  '/signUp': (context) => SignUpScreen(),
-  '/questionScreen': (context) => QuestionScreen(),
+  LoginScreen.routeName: (context) => LoginScreen(),
+  SignUpScreen.routeName: (context) => SignUpScreen(),
+  QuestionScreen.routeName: (context) => QuestionScreen(),
+  LandingScreen.routeName: (context) => LandingScreen(),
+  Home.routeName: (context) => Home(),
 };
+
+MaterialApp _materialApp(BuildContext context, AsyncSnapshot<User?> snapshot) {
+  return MaterialApp(
+    theme: AppTheme.lightTheme(context),
+    navigatorKey: locator<NavigationService>()
+        .navigatorKey, // navigator key from NavigationService
+    initialRoute: snapshot.hasData ? Home.routeName : LandingScreen.routeName,
+
+    // onGenerateRoute: RouteGenerator.generateRoute,
+    routes: _routes,
+  );
+}

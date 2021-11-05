@@ -41,7 +41,7 @@ class BaseView extends StatelessWidget {
 enum PrefferedHeader { home, nav, none }
 
 getHeader(PrefferedHeader header) {
-  if (header == PrefferedHeader.home) return HomeHeader();
+  // if (header == PrefferedHeader.home) return HomeHeader();
   if (header == PrefferedHeader.nav) return NavHeader();
 
   return Container();
