@@ -74,7 +74,7 @@ class QuestionViewModel extends BaseViewModel {
     return answer;
   }
 
-  score(List<String> answerList, List<String> stateList) {
+  int score(List<String> answerList, List<String> stateList) {
     int score = 0;
     for (int i = 0; i < answerList.length; i++) {
       if (answerList[i] == stateList[i]) {
@@ -82,5 +82,6 @@ class QuestionViewModel extends BaseViewModel {
       }
     }
     print(score);
+    return score;
   }
 }

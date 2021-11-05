@@ -1,4 +1,5 @@
 import 'package:exam_cheat_detector/app/locator.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 import 'package:provider/provider.dart';
@@ -63,7 +64,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           // camera and timer
-                          _buildCameraAndTimer(),
+                          _buildCameraAndTimer(model),
 
                           SizedBox(height: 5.h),
                           // swiper / question and answer
@@ -219,7 +220,8 @@ class _QuestionScreenState extends State<QuestionScreen> {
 
           /// Extract options using the index of [Swiper] i.e mainIndex
           TextButton(
-            onPressed: () => model.score(answerList, stateList),
+            // onPressed: () => model.score(answerList, stateList),
+            onPressed: () => _showMyDialog(model),
             child: Text(
               'Submit',
               style: TextStyle(color: Colors.white),
@@ -236,17 +238,18 @@ class _QuestionScreenState extends State<QuestionScreen> {
     );
   }
 
-  _buildTimer() {
+  _buildTimer(QuestionViewModel model) {
     return Container(
       width: 10.h,
       height: 5.h,
       padding: EdgeInsets.only(top: 3.0, right: 4.0),
       child: CountDownTimer(
-        secondsRemaining: 3600,
+        secondsRemaining: 720,
         whenTimeExpires: () {
           // setState(() {
           //   hasTimerStopped = true;
           // });
+          _showAnswerDialog(model.score(answerList, stateList), true);
         },
         countDownTimerStyle: TextStyle(
           color: Colors.white,
@@ -268,19 +271,90 @@ class _QuestionScreenState extends State<QuestionScreen> {
     );
   }
 
-  _buildCameraAndTimer() {
+  _buildCameraAndTimer(QuestionViewModel model) {
     return Container(
       width: 100.w,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           // timer
-          _buildTimer(),
+          _buildTimer(model),
 
           // camera display
           _buildCameraDisplay(),
         ],
       ),
+    );
+  }
+
+  Future<void> _showMyDialog(QuestionViewModel model) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: true, // user must tap button!
+      builder: (BuildContext context) {
+        return CupertinoAlertDialog(
+          title: const Text('Submit?'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: const <Widget>[
+                Text('Are you sure you want to submit?'),
+                // Text('Would you like to approve of this message?'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('No, Continue'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            SizedBox(
+              width: 2.w,
+            ),
+            TextButton(
+              style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(AppColors.brown)),
+              child: const Text('Yes'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                _showAnswerDialog(model.score(answerList, stateList), false);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _showAnswerDialog(int score, bool elapsed) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return CupertinoAlertDialog(
+          title: const Text('Your Score!'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                elapsed ? Text('Your time has elapsed!⏰') : Text(' '),
+                Center(
+                    child: Text('$score', style: TextStyle(fontSize: 10.sp))),
+                // Text('Would you like to approve of this message?'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Continue'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.of(context).pop(); // pops back to homescreen
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }
