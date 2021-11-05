@@ -1,4 +1,4 @@
-# exam_cheat_detector
+# mini_exam_app
 
 A new Flutter project.
 
