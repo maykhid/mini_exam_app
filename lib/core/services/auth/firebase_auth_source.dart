@@ -15,6 +15,7 @@ abstract class FirebaseAuthSource {
   Future<UserCredential> createUser(AuthCredentials credentials);
   Future<UserCredential> signIn(AuthCredentials credentials);
   Stream<User?>? get onAuthStateChanged;
+  Future<User?>? userInfo();
 }
 
 class FirebaseAuthSourceImpl with ChangeNotifier implements FirebaseAuthSource {
@@ -79,6 +80,12 @@ class FirebaseAuthSourceImpl with ChangeNotifier implements FirebaseAuthSource {
 
       throw ServerError(message);
     }
+  }
+
+  @override
+  Future<User?>? userInfo() async {
+    final User? user = firebaseAuth.currentUser;
+    return user;
   }
 
   // Future<void> onAuthStateChanged(User? user) async {

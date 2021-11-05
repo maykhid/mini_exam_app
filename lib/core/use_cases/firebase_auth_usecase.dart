@@ -9,6 +9,7 @@ abstract class FirebaseAuthUseCase {
   Future<Either<Failure, bool>> login(AuthCredentials credentials);
   Future createUser(AuthCredentials credentials);
   Stream<User?>? get onAuthStateChanged;
+  Future<User?>? userInfo();
 }
 
 class FirebaseAuthUseCaseImpl implements FirebaseAuthUseCase {
@@ -29,4 +30,9 @@ class FirebaseAuthUseCaseImpl implements FirebaseAuthUseCase {
 
   @override
   Stream<User?>? get onAuthStateChanged => firebaseAuthRepo.onAuthStateChanged;
+
+  @override
+  Future<User?>? userInfo() =>
+    firebaseAuthRepo.userInfo();
+  
 }

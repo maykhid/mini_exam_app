@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
 class HomeHeader extends StatelessWidget {
+  HomeHeader({required this.username});
+  final String? username;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -26,7 +28,7 @@ class HomeHeader extends StatelessWidget {
 
               //
               Text(
-                'Henry I.',
+                username!,
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 25.sp,

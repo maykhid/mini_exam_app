@@ -1,4 +1,5 @@
 import 'package:exam_cheat_detector/core/use_cases/firebase_auth_usecase.dart';
+import 'package:exam_cheat_detector/core/use_cases/firebasedb_usecase.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -7,6 +8,9 @@ import '../locator.dart';
 class BaseViewModel with ChangeNotifier {
   final FirebaseAuthUseCaseImpl firebaseAuthUseCase =
       FirebaseAuthUseCaseImpl(firebaseAuthRepo: locator());
+
+  final FirestoreDBUseCaseImpl firestoreDBUseCase =
+      FirestoreDBUseCaseImpl(firestoreRepo: locator());
 
   ViewState _state = ViewState.Idle;
 

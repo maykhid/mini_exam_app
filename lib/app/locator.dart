@@ -37,10 +37,10 @@ Future<void> setUpLocator() async {
     ..registerLazySingleton<FirestoreDBUseCase>(
         () => FirestoreDBUseCaseImpl(firestoreRepo: locator()))
     ..registerLazySingleton<FirebaseAuthUseCase>(
-        () => FirebaseAuthUseCaseImpl(firebaseAuthRepo: locator()))
+        () => FirebaseAuthUseCaseImpl(firebaseAuthRepo: locator()));
 
-    // viewmodel
-    // ..registerFactory(
-    //     () => LandingViewModel(firestoreDBusecaseImpl: locator()));
-    ..registerFactory(() => QuestionViewModel(firestoreDBUseCase: locator()));
+  // viewmodel
+  // ..registerFactory(
+  //     () => LandingViewModel(firestoreDBusecaseImpl: locator()));
+  // ..registerFactory(() => QuestionViewModel(firestoreDBUseCase: locator()));
 }

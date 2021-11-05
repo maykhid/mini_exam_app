@@ -36,7 +36,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
         as FirestoreParams; // args to get argument passed from the previous screen on navigating to this screen
 
     return ChangeNotifierProvider(
-        create: (_) => QuestionViewModel(firestoreDBUseCase: locator()),
+        create: (_) => QuestionViewModel(),
         builder: (context, snapshot) {
           return Builder(builder: (context) {
             var model = Provider.of<QuestionViewModel>(context);
@@ -77,7 +77,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
                     );
                   }
 
-                  return Container();
+                  return Container(child: Center(child: CircularProgressIndicator()),);
                 },
               ),
             );

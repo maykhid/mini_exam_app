@@ -23,7 +23,7 @@ class _HomeState extends State<Home> {
     return BaseView(
       body: ChangeNotifierProvider(
         create: (_) => HomeViewModel(navigationService: locator()),
-        builder: (context, snapshot) {
+        builder: (context, _) {
           return Builder(
             builder: (context) {
               var homeViewModel = Provider.of<HomeViewModel>(context);
@@ -31,7 +31,15 @@ class _HomeState extends State<Home> {
               return SingleChildScrollView(
                 child: Column(
                   children: [
-                    HomeHeader(),
+                    FutureBuilder<String>(
+                        future: homeViewModel.username(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                                  ConnectionState.done &&
+                              snapshot.data != null)
+                            return HomeHeader(username: snapshot.data);
+                          return HomeHeader(username: 'loading...');
+                        }),
 
                     SizedBox(height: 8.h),
 

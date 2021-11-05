@@ -2,6 +2,7 @@ import 'package:exam_cheat_detector/app/base_view/base_view_model.dart';
 import 'package:exam_cheat_detector/app/helpers/validators/string_validator.dart';
 import 'package:exam_cheat_detector/app/navigation_service.dart';
 import 'package:exam_cheat_detector/core/entities/auth_credentials.dart';
+import 'package:exam_cheat_detector/core/entities/firestore_params.dart';
 import 'package:exam_cheat_detector/ui/screens/home/home.dart';
 import 'package:exam_cheat_detector/ui/widgets/show_flush_bar.dart';
 import 'package:flutter/material.dart';
@@ -57,11 +58,20 @@ class SignUpViewModel extends BaseViewModel {
     result.fold((failure) {
       //error
       showFlushBar(context, title: "SignUp Error", message: failure.message);
-    }, (success) {
+    }, (success) async {
       //success
-      if (success)
+      if (success) {
         navigationService.navigateToAndPopPrevious(Home.routeName);
-      else
+        var user = await firebaseAuthUseCase.userInfo();
+        if (user != null) {
+          firestoreDBUseCase.storeData(
+              FirestoreParams(collection: 'Users', document: user.uid, data: {
+            'firstname': credentials.firstname,
+            'surname': credentials.surname,
+            'email': credentials.email,
+          }));
+        }
+      } else
         showFlushBar(context,
             title: "SignUp Error", message: "something went wrong");
     });

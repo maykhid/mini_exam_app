@@ -10,6 +10,7 @@ abstract class FirebaseAuthRepo {
   Stream<User?>? get onAuthStateChanged;
   Future<Either<Failure, bool>> createUser(AuthCredentials credentials);
   Future<Either<Failure, bool>> signIn(AuthCredentials credentials);
+  Future<User?>? userInfo();
 }
 
 class FirebaseAuthRepoImpl implements FirebaseAuthRepo {
@@ -49,4 +50,7 @@ class FirebaseAuthRepoImpl implements FirebaseAuthRepo {
 
   Stream<User?>? get onAuthStateChanged =>
       firebaseAuthSource.onAuthStateChanged;
+
+  @override
+  Future<User?>? userInfo() => firebaseAuthSource.userInfo();
 }

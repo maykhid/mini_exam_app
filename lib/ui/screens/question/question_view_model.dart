@@ -7,9 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 
 class QuestionViewModel extends BaseViewModel {
-  FirestoreDBUseCase firestoreDBUseCase;
+  // FirestoreDBUseCase firestoreDBUseCase;
 
-  QuestionViewModel({required this.firestoreDBUseCase});
+  // QuestionViewModel({required this.firestoreDBUseCase});
 
   // List<dynamic> stateList = List<dynamic>.filled(
   //   questions.length,
